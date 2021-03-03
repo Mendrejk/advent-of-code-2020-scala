@@ -1,12 +1,18 @@
 import scala.annotation.tailrec
-import scala.io.Source
+import IoUtilities.readLinesToListInt
 
 object Day_1 {
   def main(args: Array[String]): Unit = {
     val directory: String = "resources/DataDay_1.txt"
-    val data: List[Int] = readNumbers(directory)
-    println(findTwoAddingUpTo(data, 2020))
-    println(findThreeAddingUpTo(data, 2020))
+    val data: Option[List[Int]] = readLinesToListInt(directory)
+    data match {
+      case Some(numbers: List[Int]) =>
+        val targetSum: Int = 2020
+        println(findTwoAddingUpTo(data.get, targetSum))
+        println(findThreeAddingUpTo(data.get, targetSum))
+      case None =>
+        println("Data reading error... Please check the given directory.")
+    }
   }
 
   def findTwoAddingUpTo(numbers: List[Int], targetSum: Int): List[Int] = {
@@ -25,14 +31,6 @@ object Day_1 {
               yield first * second * third })
           .flatten })
       .flatten
-  }
-
-  def readNumbers(directory: String): List[Int] = {
-    val bufferedReader = Source.fromFile(directory)
-    val numbers: List[Int] = bufferedReader.getLines()
-      .map((number: String) => number.toInt).toList
-    bufferedReader.close()
-    numbers
   }
 
   @tailrec
