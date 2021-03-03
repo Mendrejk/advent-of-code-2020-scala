@@ -10,6 +10,13 @@ import scala.io.{BufferedSource, Source}
       }
     }
 
+    def readLinesToListString(directory: String): Option[List[String]] = {
+      readLines(directory) {
+        (iterator: Iterator[String]) =>
+          iterator.map((number: String) => number.toString).toList
+      }
+    }
+
     private def readLines[A]
       (directory: String) (transform: Iterator[String] => A): Option[A] = {
         try {
